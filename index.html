@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IG Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Figtree:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- BACKGROUND GRID -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════ HEADER ═══════════════════════ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">◈</span>
+        <div class="logo-text">
+          <h1>IG<span class="accent">Analyzer</span></h1>
+          <p class="logo-sub">Instagram Relationships Dashboard</p>
+        </div>
+      </div>
+      <div class="header-meta" id="header-meta" style="display:none">
+        <div class="meta-pill" id="meta-followers">
+          <span class="meta-num" id="meta-followers-num">—</span>
+          <span class="meta-label">followers</span>
+        </div>
+        <div class="meta-divider"></div>
+        <div class="meta-pill" id="meta-following">
+          <span class="meta-num" id="meta-following-num">—</span>
+          <span class="meta-label">following</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════ UPLOAD ═══════════════════════ -->
+  <section class="upload-section" id="upload-section">
+    <div class="upload-card" id="drop-zone">
+      <div class="upload-icon">⬡</div>
+      <h2 class="upload-title">Drop your Instagram JSON files</h2>
+      <p class="upload-desc">
+        Export your data from Instagram → Settings → Your Activity → Download your information.<br />
+        All processing is <strong>100% local</strong> — nothing leaves your browser.
+      </p>
+      <button class="btn-primary" id="select-files-btn">
+        <span>Select Files</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <input type="file" id="file-input" multiple accept=".json" style="display:none" />
+
+      <div class="file-checklist" id="file-checklist">
+        <div class="check-item" data-slot="followers">
+          <span class="check-dot"></span><span class="check-name">followers_1.json</span>
+        </div>
+        <div class="check-item" data-slot="following">
+          <span class="check-dot"></span><span class="check-name">following.json</span>
+        </div>
+        <div class="check-item" data-slot="close_friends">
+          <span class="check-dot"></span><span class="check-name">close_friends.json</span>
+        </div>
+        <div class="check-item" data-slot="blocked">
+          <span class="check-dot"></span><span class="check-name">blocked_profiles.json</span>
+        </div>
+        <div class="check-item" data-slot="pending">
+          <span class="check-dot"></span><span class="check-name">pending_follow_requests.json</span>
+        </div>
+        <div class="check-item" data-slot="received">
+          <span class="check-dot"></span><span class="check-name">follow_requests_you_ve_received.json</span>
+        </div>
+        <div class="check-item" data-slot="unfollowed">
+          <span class="check-dot"></span><span class="check-name">recently_unfollowed_profiles.json</span>
+        </div>
+        <div class="check-item" data-slot="recent_requests">
+          <span class="check-dot"></span><span class="check-name">recent_follow_requests.json</span>
+        </div>
+        <div class="check-item" data-slot="hide_story">
+          <span class="check-dot"></span><span class="check-name">hide_story_from.json</span>
+        </div>
+        <div class="check-item" data-slot="removed">
+          <span class="check-dot"></span><span class="check-name">removed_suggestions.json</span>
+        </div>
+      </div>
+
+      <button class="btn-analyze" id="analyze-btn" style="display:none" onclick="window.App.analyze()">
+        Analyze Now →
+      </button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ DASHBOARD ═══════════════════════ -->
+  <main class="dashboard" id="dashboard" style="display:none">
+
+    <!-- STATS ROW -->
+    <section class="stats-row" id="stats-row"></section>
+
+    <!-- CONTROLS -->
+    <div class="controls-bar">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input
+          type="text"
+          id="search-input"
+          class="search-input"
+          placeholder="Search username…"
+          oninput="window.App.handleSearch()"
+        />
+      </div>
+      <button class="btn-export" onclick="window.App.exportCSV()">↓ CSV</button>
+    </div>
+
+    <!-- TABS -->
+    <nav class="tabs-nav" id="tabs-nav" role="tablist"></nav>
+
+    <!-- LIST -->
+    <section class="list-section">
+      <div class="list-meta">
+        <div>
+          <h2 class="list-title" id="list-title"></h2>
+          <p class="list-desc" id="list-desc"></p>
+        </div>
+        <span class="list-count" id="list-count"></span>
+      </div>
+      <div class="user-grid" id="user-grid"></div>
+      <div class="pagination" id="pagination"></div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
