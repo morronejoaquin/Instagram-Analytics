@@ -116,6 +116,12 @@
   /**
    * Given any Instagram JSON structure, extract a flat array of
    * { username, href, timestamp } objects.
+   *
+   * Handles two export formats:
+   *  1. Old format: items with `string_list_data` array and/or `title`
+   *     (used by followers_1.json and following.json)
+   *  2. New format: items with `label_values` array containing {label, value} pairs
+   *     (used by blocked, close_friends, pending_requests, etc.)
    */
   function extractUsers(data) {
     const result = [];
@@ -129,8 +135,26 @@
     if (!Array.isArray(arr)) return result;
 
     for (const item of arr) {
-      const sld = Array.isArray(item.string_list_data) ? item.string_list_data : [];
+      // ── NEW FORMAT: label_values ────────────────────────────────
+      if (Array.isArray(item.label_values) && item.label_values.length > 0) {
+        const lv = item.label_values;
+        const getVal = label => {
+          const entry = lv.find(e => e.label === label);
+          return entry ? (entry.value || '') : '';
+        };
+        const username = getVal('Username');
+        if (!username) continue;
+        const url = getVal('URL');
+        result.push({
+          username,
+          href:      url || `https://www.instagram.com/${username}`,
+          timestamp: item.timestamp || 0,
+        });
+        continue;
+      }
 
+      // ── OLD FORMAT: string_list_data ───────────────────────────
+      const sld = Array.isArray(item.string_list_data) ? item.string_list_data : [];
       if (sld.length > 0) {
         for (const s of sld) {
           const username = s.value || item.title || extractUsernameFromHref(s.href) || '';
