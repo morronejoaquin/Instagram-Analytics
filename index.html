@@ -7,7 +7,743 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Figtree:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <style>
+/* ══════════════════════════════════════════
+   IG ANALYZER — STYLESHEET
+   Aesthetic: Dark editorial / data terminal
+   ══════════════════════════════════════════ */
+
+/* ── TOKENS ─────────────────────────────── */
+:root {
+  --bg:          #080810;
+  --surface:     #0f0f1a;
+  --surface-2:   #161625;
+  --surface-3:   #1e1e30;
+  --border:      rgba(255,255,255,0.07);
+  --border-mid:  rgba(255,255,255,0.12);
+
+  --white:       #f4f4ff;
+  --muted:       #6b6b88;
+  --muted-2:     #9494b0;
+
+  --pink:        #ff3d78;
+  --amber:       #ffb340;
+  --cyan:        #00d4ff;
+  --green:       #3dffa0;
+  --purple:      #a855f7;
+  --red:         #ff4545;
+  --blue:        #4f8bff;
+  --slate:       #8899aa;
+
+  --accent:      var(--cyan);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'Figtree', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+  --radius:       10px;
+  --radius-lg:    18px;
+  --transition:   0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── RESET ──────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── BACKGROUND ─────────────────────────── */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-glow {
+  position: fixed;
+  top: -30vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  height: 60vh;
+  background: radial-gradient(ellipse, rgba(0,212,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HEADER ─────────────────────────────── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(8,8,16,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-icon {
+  font-size: 26px;
+  color: var(--cyan);
+  line-height: 1;
+  filter: drop-shadow(0 0 10px rgba(0,212,255,0.5));
+  animation: pulse-icon 3s ease-in-out infinite;
+}
+
+@keyframes pulse-icon {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+.logo-text h1 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  letter-spacing: 1px;
+  line-height: 1;
+  color: var(--white);
+}
+
+.logo-text h1 .accent { color: var(--cyan); }
+
+.logo-sub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.meta-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 16px;
+}
+
+.meta-num {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1;
+  color: var(--white);
+}
+
+.meta-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.meta-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--border-mid);
+}
+
+/* ── UPLOAD SECTION ─────────────────────── */
+.upload-section {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 64px);
+  padding: 40px 20px;
+}
+
+.upload-card {
+  background: var(--surface);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-lg);
+  padding: 52px 44px;
+  max-width: 680px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.upload-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0.5;
+}
+
+.upload-card.drag-over {
+  border-color: var(--cyan);
+  box-shadow: 0 0 60px rgba(0,212,255,0.15), 0 40px 80px rgba(0,0,0,0.5);
+}
+
+.upload-icon {
+  font-size: 48px;
+  color: var(--cyan);
+  margin-bottom: 20px;
+  line-height: 1;
+  filter: drop-shadow(0 0 16px rgba(0,212,255,0.4));
+}
+
+.upload-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  letter-spacing: 1px;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+
+.upload-desc {
+  font-size: 13px;
+  color: var(--muted-2);
+  line-height: 1.7;
+  max-width: 440px;
+  margin: 0 auto 28px;
+}
+
+.upload-desc strong {
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* ── BUTTONS ────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1.5px solid var(--cyan);
+  color: var(--cyan);
+  padding: 11px 28px;
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-transform: uppercase;
+}
+
+.btn-primary:hover {
+  background: var(--cyan);
+  color: var(--bg);
+  box-shadow: 0 0 30px rgba(0,212,255,0.3);
+  transform: translateY(-1px);
+}
+
+.btn-analyze {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--cyan), #0095ff);
+  color: var(--bg);
+  border: none;
+  padding: 14px 40px;
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-top: 24px;
+  box-shadow: 0 8px 30px rgba(0,212,255,0.2);
+}
+
+.btn-analyze:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px rgba(0,212,255,0.35);
+}
+
+.btn-export {
+  background: transparent;
+  border: 1px solid var(--border-mid);
+  color: var(--muted-2);
+  padding: 9px 18px;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.btn-export:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* ── FILE CHECKLIST ─────────────────────── */
+.file-checklist {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  margin-top: 28px;
+  text-align: left;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  transition: all var(--transition);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.check-item.loaded {
+  border-color: rgba(61,255,160,0.3);
+  background: rgba(61,255,160,0.04);
+  color: var(--green);
+}
+
+.check-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  border: 1px solid var(--border-mid);
+  flex-shrink: 0;
+  transition: all var(--transition);
+}
+
+.check-item.loaded .check-dot {
+  background: var(--green);
+  border-color: var(--green);
+  box-shadow: 0 0 8px rgba(61,255,160,0.6);
+}
+
+/* ── DASHBOARD ──────────────────────────── */
+.dashboard {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+/* ── STATS ROW ──────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px 20px 18px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.stat-card:hover {
+  border-color: var(--card-color);
+  transform: translateY(-2px);
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--card-color);
+  opacity: 0.6;
+}
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1;
+  color: var(--card-color);
+  letter-spacing: 1px;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* ── CONTROLS BAR ───────────────────────── */
+.controls-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 380px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--muted);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.search-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border-mid);
+  border-radius: 100px;
+  padding: 10px 16px 10px 40px;
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  outline: none;
+  transition: all var(--transition);
+}
+
+.search-input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.08);
+}
+
+.search-input::placeholder { color: var(--muted); }
+
+/* ── TABS ───────────────────────────────── */
+.tabs-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 28px;
+  padding-bottom: 4px;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  border-color: var(--tab-color);
+  color: var(--tab-color);
+  background: rgba(255,255,255,0.02);
+}
+
+.tab-btn.active {
+  border-color: var(--tab-color);
+  background: var(--tab-color);
+  color: #000;
+  font-weight: 600;
+}
+
+.tab-count {
+  background: rgba(0,0,0,0.2);
+  border-radius: 100px;
+  padding: 1px 7px;
+  font-size: 10px;
+}
+
+.tab-btn:not(.active) .tab-count {
+  background: rgba(255,255,255,0.07);
+  color: var(--muted-2);
+}
+
+/* ── LIST SECTION ───────────────────────── */
+.list-section {
+  min-height: 300px;
+}
+
+.list-meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.list-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.list-desc {
+  font-size: 12px;
+  color: var(--muted-2);
+  margin-top: 4px;
+}
+
+.list-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 5px 12px;
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+/* ── USER GRID ──────────────────────────── */
+.user-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 8px;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 15px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--transition);
+  animation: card-in 0.3s ease both;
+}
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.user-card:hover {
+  border-color: var(--card-accent, var(--cyan));
+  background: var(--surface-2);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: conic-gradient(var(--card-accent, var(--cyan)), var(--purple), var(--card-accent, var(--cyan)));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: #fff;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.user-avatar::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  z-index: 0;
+}
+
+.user-avatar span {
+  position: relative;
+  z-index: 1;
+  color: var(--card-accent, var(--cyan));
+}
+
+.user-info { flex: 1; min-width: 0; }
+
+.user-name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-date {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.user-link {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 12px;
+  transition: all var(--transition);
+}
+
+.user-link:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(0,212,255,0.08);
+}
+
+/* ── EMPTY STATE ────────────────────────── */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 70px 20px;
+  color: var(--muted);
+}
+
+.empty-state .empty-icon {
+  font-size: 42px;
+  margin-bottom: 14px;
+  display: block;
+  opacity: 0.5;
+}
+
+.empty-state p {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* ── PAGINATION ─────────────────────────── */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted-2);
+  border-radius: var(--radius);
+  padding: 7px 13px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all var(--transition);
+  min-width: 36px;
+}
+
+.page-btn:hover:not(.active):not(:disabled) {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+.page-btn.active {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: #000;
+  font-weight: 700;
+}
+
+.page-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.page-ellipsis {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 0 4px;
+}
+
+.page-info {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  padding: 0 8px;
+}
+
+/* ── SCROLLBAR ──────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ── RESPONSIVE ─────────────────────────── */
+@media (max-width: 768px) {
+  .header-inner { padding: 0 16px; }
+  .upload-card  { padding: 32px 20px; }
+  .upload-title { font-size: 24px; }
+  .dashboard    { padding: 24px 16px 60px; }
+  .stats-row    { grid-template-columns: repeat(2, 1fr); }
+  .user-grid    { grid-template-columns: 1fr; }
+  .controls-bar { flex-wrap: wrap; }
+  .search-wrap  { max-width: 100%; width: 100%; }
+  .file-checklist { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 400px) {
+  .tabs-nav { gap: 4px; }
+  .tab-btn  { padding: 6px 10px; font-size: 10px; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+}
+</style>
 </head>
 <body>
 
@@ -132,6 +868,511 @@
 
   </main>
 
-  <script src="app.js"></script>
+  <script>
+/**
+ * IG Analyzer — app.js
+ * All logic: file parsing, data analysis, rendering
+ */
+
+(function () {
+  'use strict';
+
+  // ── CONFIG ─────────────────────────────────────────────────────
+  const PAGE_SIZE = 60;
+
+  const TAB_CONFIG = [
+    {
+      key:   'dontFollowBack',
+      label: "Don't Follow Back",
+      desc:  "You follow them — they don't follow you back",
+      color: '#ff3d78',
+      icon:  '💔',
+    },
+    {
+      key:   'notFollowingBack',
+      label: "Not Following Back",
+      desc:  "They follow you — you don't follow them",
+      color: '#ffb340',
+      icon:  '👁',
+    },
+    {
+      key:   'mutual',
+      label: "Mutual",
+      desc:  "You follow each other",
+      color: '#3dffa0',
+      icon:  '🤝',
+    },
+    {
+      key:   'closeFriends',
+      label: "Close Friends",
+      desc:  "Your close friends list",
+      color: '#e879f9',
+      icon:  '⭐',
+    },
+    {
+      key:   'blocked',
+      label: "Blocked",
+      desc:  "Accounts you have blocked",
+      color: '#ff4545',
+      icon:  '🚫',
+    },
+    {
+      key:   'pendingRequests',
+      label: "Pending Sent",
+      desc:  "Follow requests you sent, not yet accepted",
+      color: '#a855f7',
+      icon:  '⏳',
+    },
+    {
+      key:   'receivedRequests',
+      label: "Pending Received",
+      desc:  "Follow requests awaiting your approval",
+      color: '#00d4ff',
+      icon:  '📨',
+    },
+    {
+      key:   'recentlyUnfollowed',
+      label: "Unfollowed",
+      desc:  "Accounts you recently unfollowed",
+      color: '#8899aa',
+      icon:  '👋',
+    },
+    {
+      key:   'hideStoryFrom',
+      label: "Hidden Story",
+      desc:  "People hidden from your stories",
+      color: '#ff7043',
+      icon:  '🙈',
+    },
+    {
+      key:   'removedSuggestions',
+      label: "Removed Suggestions",
+      desc:  "Suggestions you dismissed",
+      color: '#607d8b',
+      icon:  '❌',
+    },
+  ];
+
+  const STAT_CONFIG = [
+    { key: 'followers',        label: 'Followers',          color: '#3dffa0' },
+    { key: 'following',        label: 'Following',          color: '#4f8bff' },
+    { key: 'dontFollowBack',   label: "Don't Follow Back",  color: '#ff3d78' },
+    { key: 'notFollowingBack', label: "Not Following Back", color: '#ffb340' },
+    { key: 'mutual',           label: 'Mutual',             color: '#00d4ff' },
+    { key: 'blocked',          label: 'Blocked',            color: '#ff4545' },
+  ];
+
+  // ── STATE ──────────────────────────────────────────────────────
+  const store = {
+    raw: {
+      followers:          [],
+      following:          [],
+      closeFriends:       [],
+      blocked:            [],
+      pendingRequests:    [],
+      receivedRequests:   [],
+      recentlyUnfollowed: [],
+      recentFollowRequests: [],
+      hideStoryFrom:      [],
+      removedSuggestions: [],
+    },
+    lists: {},
+    currentTab:  '',
+    currentPage: 1,
+    searchQuery: '',
+  };
+
+  // ── UTILITY ────────────────────────────────────────────────────
+
+  /**
+   * Given any Instagram JSON structure, extract a flat array of
+   * { username, href, timestamp } objects.
+   *
+   * Handles two export formats:
+   *  1. Old format: items with `string_list_data` array and/or `title`
+   *     (used by followers_1.json and following.json)
+   *  2. New format: items with `label_values` array containing {label, value} pairs
+   *     (used by blocked, close_friends, pending_requests, etc.)
+   */
+  function extractUsers(data) {
+    const result = [];
+    if (!data) return result;
+
+    // Unwrap top-level object if needed (e.g. { relationships_following: [...] })
+    const arr = Array.isArray(data)
+      ? data
+      : Object.values(data)[0];
+
+    if (!Array.isArray(arr)) return result;
+
+    for (const item of arr) {
+      // ── NEW FORMAT: label_values ────────────────────────────────
+      if (Array.isArray(item.label_values) && item.label_values.length > 0) {
+        const lv = item.label_values;
+        const getVal = label => {
+          const entry = lv.find(e => e.label === label);
+          return entry ? (entry.value || '') : '';
+        };
+        const username = getVal('Username');
+        if (!username) continue;
+        const url = getVal('URL');
+        result.push({
+          username,
+          href:      url || `https://www.instagram.com/${username}`,
+          timestamp: item.timestamp || 0,
+        });
+        continue;
+      }
+
+      // ── OLD FORMAT: string_list_data ───────────────────────────
+      const sld = Array.isArray(item.string_list_data) ? item.string_list_data : [];
+      if (sld.length > 0) {
+        for (const s of sld) {
+          const username = s.value || item.title || extractUsernameFromHref(s.href) || '';
+          if (username) {
+            result.push({
+              username,
+              href:      s.href || `https://www.instagram.com/${username}`,
+              timestamp: s.timestamp || 0,
+            });
+          }
+        }
+      } else if (item.title) {
+        // following.json uses `title` with no string_list_data values
+        result.push({
+          username:  item.title,
+          href:      `https://www.instagram.com/_u/${item.title}`,
+          timestamp: 0,
+        });
+      }
+    }
+
+    return result;
+  }
+
+  function extractUsernameFromHref(href) {
+    if (!href) return '';
+    return href.split('/').filter(Boolean).pop() || '';
+  }
+
+  function formatDate(timestamp) {
+    if (!timestamp) return '';
+    return new Date(timestamp * 1000).toLocaleDateString('en-US', {
+      month: 'short',
+      day:   'numeric',
+      year:  'numeric',
+    });
+  }
+
+  function initials(username) {
+    return username.replace(/[^a-zA-Z0-9]/g, '').slice(0, 2).toUpperCase() || '??';
+  }
+
+  // ── FILE HANDLING ──────────────────────────────────────────────
+
+  const FILE_MAP = [
+    { match: n => n.includes('follower'),                              slot: 'followers',          storeKey: 'followers' },
+    { match: n => n.includes('following') && !n.includes('recent'),   slot: 'following',          storeKey: 'following' },
+    { match: n => n.includes('close'),                                 slot: 'close_friends',      storeKey: 'closeFriends' },
+    { match: n => n.includes('blocked'),                               slot: 'blocked',            storeKey: 'blocked' },
+    { match: n => n.includes('pending'),                               slot: 'pending',            storeKey: 'pendingRequests' },
+    { match: n => n.includes('received') || n.includes('requests_you'), slot: 'received',         storeKey: 'receivedRequests' },
+    { match: n => n.includes('unfollowed'),                            slot: 'unfollowed',         storeKey: 'recentlyUnfollowed' },
+    { match: n => n.includes('recent_follow'),                         slot: 'recent_requests',    storeKey: 'recentFollowRequests' },
+    { match: n => n.includes('hide'),                                  slot: 'hide_story',         storeKey: 'hideStoryFrom' },
+    { match: n => n.includes('removed') || n.includes('suggestion'),   slot: 'removed',            storeKey: 'removedSuggestions' },
+  ];
+
+  function mapAndStoreFile(filename, json) {
+    const n = filename.toLowerCase();
+    const entry = FILE_MAP.find(e => e.match(n));
+    if (!entry) return;
+    store.raw[entry.storeKey] = extractUsers(json);
+    markSlotLoaded(entry.slot);
+  }
+
+  function markSlotLoaded(slot) {
+    const el = document.querySelector(`[data-slot="${slot}"]`);
+    if (el) el.classList.add('loaded');
+    checkCanAnalyze();
+  }
+
+  function checkCanAnalyze() {
+    const canAnalyze =
+      store.raw.followers.length > 0 ||
+      store.raw.following.length > 0;
+    const btn = document.getElementById('analyze-btn');
+    if (btn) btn.style.display = canAnalyze ? 'inline-block' : 'none';
+  }
+
+  // ── ANALYSIS ──────────────────────────────────────────────────
+
+  function buildLists() {
+    const { raw } = store;
+    const followerSet = new Set(raw.followers.map(u => u.username));
+    const followingSet = new Set(raw.following.map(u => u.username));
+
+    store.lists = {
+      dontFollowBack:    raw.following.filter(u => !followerSet.has(u.username)),
+      notFollowingBack:  raw.followers.filter(u => !followingSet.has(u.username)),
+      mutual:            raw.following.filter(u => followerSet.has(u.username)),
+      closeFriends:      raw.closeFriends,
+      blocked:           raw.blocked,
+      pendingRequests:   raw.pendingRequests,
+      receivedRequests:  raw.receivedRequests,
+      recentlyUnfollowed: raw.recentlyUnfollowed,
+      hideStoryFrom:     raw.hideStoryFrom,
+      removedSuggestions: raw.removedSuggestions,
+    };
+  }
+
+  // ── RENDER: STATS ──────────────────────────────────────────────
+
+  function renderStats() {
+    const counts = {
+      followers:        store.raw.followers.length,
+      following:        store.raw.following.length,
+      dontFollowBack:   store.lists.dontFollowBack.length,
+      notFollowingBack: store.lists.notFollowingBack.length,
+      mutual:           store.lists.mutual.length,
+      blocked:          store.lists.blocked.length,
+    };
+
+    const row = document.getElementById('stats-row');
+    row.innerHTML = STAT_CONFIG.map(s => `
+      <div class="stat-card" style="--card-color: ${s.color}">
+        <div class="stat-num">${counts[s.key]}</div>
+        <div class="stat-label">${s.label}</div>
+      </div>
+    `).join('');
+
+    // Header meta
+    document.getElementById('meta-followers-num').textContent = counts.followers;
+    document.getElementById('meta-following-num').textContent  = counts.following;
+    document.getElementById('header-meta').style.display = 'flex';
+  }
+
+  // ── RENDER: TABS ───────────────────────────────────────────────
+
+  function renderTabs() {
+    const nav = document.getElementById('tabs-nav');
+    nav.innerHTML = TAB_CONFIG.map(t => `
+      <button
+        class="tab-btn"
+        id="tab-${t.key}"
+        role="tab"
+        aria-selected="false"
+        style="--tab-color: ${t.color}"
+        onclick="window.App.setTab('${t.key}')"
+      >
+        ${t.icon} ${t.label}
+        <span class="tab-count">${(store.lists[t.key] || []).length}</span>
+      </button>
+    `).join('');
+  }
+
+  // ── RENDER: LIST ───────────────────────────────────────────────
+
+  function getFilteredList() {
+    const base = store.lists[store.currentTab] || [];
+    const q = store.searchQuery.trim().toLowerCase();
+    return q ? base.filter(u => u.username.toLowerCase().includes(q)) : base;
+  }
+
+  function renderList() {
+    const items      = getFilteredList();
+    const total      = items.length;
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    const start      = (store.currentPage - 1) * PAGE_SIZE;
+    const page       = items.slice(start, start + PAGE_SIZE);
+
+    const cfg = TAB_CONFIG.find(t => t.key === store.currentTab) || {};
+
+    // Title + desc + count
+    document.getElementById('list-title').textContent  = cfg.icon + ' ' + (cfg.label || '');
+    document.getElementById('list-desc').textContent   = cfg.desc  || '';
+    document.getElementById('list-count').textContent  = `${total} accounts`;
+
+    // Set CSS variable on list section for accent colour
+    const listSection = document.querySelector('.list-section');
+    if (listSection) listSection.style.setProperty('--card-accent', cfg.color || 'var(--cyan)');
+
+    // Cards
+    const grid = document.getElementById('user-grid');
+    if (page.length === 0) {
+      grid.innerHTML = `
+        <div class="empty-state">
+          <span class="empty-icon">◎</span>
+          <p>${store.searchQuery ? 'No results for "' + store.searchQuery + '"' : 'No accounts in this list'}</p>
+        </div>`;
+    } else {
+      grid.innerHTML = page.map((u, i) => `
+        <div class="user-card" style="animation-delay: ${i * 12}ms; --card-accent: ${cfg.color || 'var(--cyan)'}">
+          <div class="user-avatar">
+            <span>${initials(u.username)}</span>
+          </div>
+          <div class="user-info">
+            <div class="user-name">@${u.username}</div>
+            ${u.timestamp ? `<div class="user-date">${formatDate(u.timestamp)}</div>` : ''}
+          </div>
+          <a href="${u.href}" target="_blank" rel="noopener noreferrer" class="user-link" title="Open on Instagram">↗</a>
+        </div>
+      `).join('');
+    }
+
+    renderPagination(totalPages);
+  }
+
+  function renderPagination(totalPages) {
+    const pag = document.getElementById('pagination');
+    if (totalPages <= 1) { pag.innerHTML = ''; return; }
+
+    const cp = store.currentPage;
+    let html = '';
+
+    // Info
+    html += `<span class="page-info">Page ${cp} of ${totalPages}</span>`;
+
+    // Prev
+    html += `<button class="page-btn" onclick="window.App.goPage(${cp - 1})" ${cp === 1 ? 'disabled' : ''}>← Prev</button>`;
+
+    // Page numbers with ellipsis
+    const range = 2;
+    let lastPrinted = 0;
+    for (let p = 1; p <= totalPages; p++) {
+      const inRange = p === 1 || p === totalPages || (p >= cp - range && p <= cp + range);
+      if (inRange) {
+        if (lastPrinted && p - lastPrinted > 1) {
+          html += `<span class="page-ellipsis">…</span>`;
+        }
+        html += `<button class="page-btn ${p === cp ? 'active' : ''}" onclick="window.App.goPage(${p})">${p}</button>`;
+        lastPrinted = p;
+      }
+    }
+
+    // Next
+    html += `<button class="page-btn" onclick="window.App.goPage(${cp + 1})" ${cp === totalPages ? 'disabled' : ''}>Next →</button>`;
+
+    pag.innerHTML = html;
+  }
+
+  // ── PUBLIC API ─────────────────────────────────────────────────
+
+  function analyze() {
+    buildLists();
+    renderStats();
+    renderTabs();
+
+    document.getElementById('upload-section').style.display = 'none';
+    document.getElementById('dashboard').style.display      = 'block';
+
+    setTab('dontFollowBack');
+  }
+
+  function setTab(key) {
+    store.currentTab  = key;
+    store.currentPage = 1;
+    store.searchQuery = '';
+    document.getElementById('search-input').value = '';
+
+    // Update tab active state
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+    const activeBtn = document.getElementById('tab-' + key);
+    if (activeBtn) {
+      activeBtn.classList.add('active');
+      activeBtn.setAttribute('aria-selected', 'true');
+      activeBtn.scrollIntoView({ inline: 'nearest', behavior: 'smooth' });
+    }
+
+    renderList();
+  }
+
+  function goPage(p) {
+    store.currentPage = p;
+    renderList();
+    document.querySelector('.list-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function handleSearch() {
+    store.searchQuery = document.getElementById('search-input').value;
+    store.currentPage = 1;
+    renderList();
+  }
+
+  function exportCSV() {
+    const items = getFilteredList();
+    if (!items.length) return;
+
+    const cfg = TAB_CONFIG.find(t => t.key === store.currentTab) || {};
+    const rows = [['username', 'url', 'date']];
+    items.forEach(u => {
+      rows.push([
+        u.username,
+        u.href,
+        u.timestamp ? formatDate(u.timestamp) : '',
+      ]);
+    });
+
+    const csv  = rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a    = document.createElement('a');
+    a.href     = URL.createObjectURL(blob);
+    a.download = `instagram_${(cfg.label || store.currentTab).replace(/\s+/g, '_').toLowerCase()}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  // ── INIT ───────────────────────────────────────────────────────
+
+  function init() {
+    // File input button
+    document.getElementById('select-files-btn').addEventListener('click', () => {
+      document.getElementById('file-input').click();
+    });
+
+    // File input change
+    document.getElementById('file-input').addEventListener('change', e => {
+      Array.from(e.target.files).forEach(readFileObject);
+    });
+
+    // Drag and drop
+    const dropZone = document.getElementById('drop-zone');
+    dropZone.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      Array.from(e.dataTransfer.files).forEach(readFileObject);
+    });
+  }
+
+  function readFileObject(file) {
+    if (!file.name.endsWith('.json')) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const json = JSON.parse(ev.target.result);
+        mapAndStoreFile(file.name, json);
+      } catch (err) {
+        console.warn('Failed to parse:', file.name, err);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  // ── EXPOSE ─────────────────────────────────────────────────────
+  window.App = { analyze, setTab, goPage, handleSearch, exportCSV };
+
+  // ── BOOT ───────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', init);
+
+})();
+</script>
 </body>
 </html>
